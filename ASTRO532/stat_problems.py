@@ -10,19 +10,6 @@ def factorial(x:int) -> int:
 def prob_poisson(k:float, lam:float) -> float:
     return lam**k * np.exp(-lam) / (factorial(k))
 
-def make_2d(x, y, z, per_pixel_limit=None, cmap=None, title=None, x_scale="linear", y_scale="linear"):
-
-    fig, ax = plt.subplots(figsize=(6,5))
-    im = plt.imshow(count_stat, cmap=("rainbow" if cmap is None else cmap), vmin=per_pixel_limit, vmax=np.nanmax(count_stat), origin="lower", aspect="auto", extent=[x_limits[0], x_limits[1], y_limits[0], y_limits[1]], alpha=None)
-    
-    cbar = plt.colorbar(im)
-    cbar.ax.get_yaxis().labelpad = 20
-    cbar.set_label(r"P", fontsize=14, rotation=270)
-    plt.xscale(x_scale)
-    plt.yscale(y_scale)
-    plt.tight_layout()
-    plt.show()
-
 N = 25
 
 ks = np.arange(N)+1
