@@ -11,6 +11,7 @@ def prob_poisson(k:float, lam:float) -> float:
     if lam > 15:
         print(np.exp(-lam))
     return lam**k * np.exp(-lam) / (factorial(k))
+N = 25
 
 ks = np.arange(N)+1
 lams = np.arange(N)+1
