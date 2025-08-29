@@ -25,3 +25,8 @@ plt.imshow(Ps, origin="lower", extent=[1, N, 1, N], cmap="rainbow")
 plt.xlabel(r"$k$", fontsize=16)
 plt.ylabel(r"$\lambda$", fontsize=16)
 plt.show()
+lams = list(lams)
+for lam in lams:
+    plt.plot(ks, Ps[(lams.index(lam)),:], label=f"$\lambda$={lam}")
+    plt.legend()
+    plt.show()
