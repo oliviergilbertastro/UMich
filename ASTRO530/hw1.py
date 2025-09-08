@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.special import expn
+from scipy.integrate import quad
 
 def simpson(func, bounds, N):
     '''
@@ -23,31 +24,45 @@ def simpson(func, bounds, N):
 def E2(x:float) -> float:
     return expn(2, x)
 
-def S_nu(nu:float, tau_nu:float) -> float:
+def S_nu(tau_nu:float, nu:float) -> float:
    """We can use Planck's function as the source function because of local thermodynamic equilibrium."""
-   T = ((3/4)*T_eff**4*(tau_nu+2/3))**(-4)
+   T = ((3/4)*T_eff**4*(tau_nu+2/3))**(1/4)
+   #print(T, T_eff, tau_nu)
    return 2*h*nu**3/c**2 * 1/(np.exp(h*nu/(k*T))-1)
 
-def func_inside_int(t_nu, tau_nu):
-   return S_nu(t_nu)*E2(t_nu-tau_nu)
-
 def f_nu(nu:float, tau_nu:float) -> float:
-    return 2*np.pi*simpson(lambda t_nu: func_inside_int(t_nu, tau_nu), bounds=(tau_nu,np.inf), N=1000) - \
-           2*np.pi*simpson(lambda t_nu: func_inside_int(t_nu, tau_nu), bounds=(tau_nu,np.inf), N=1000)
+    #print(quad(lambda t_nu: S_nu(nu, t_nu)*E2(t_nu-tau_nu), a=tau_nu, b=np.inf)[0], quad(lambda t_nu: S_nu(nu, t_nu)*E2(tau_nu-t_nu), a=0, b=tau_nu)[0])
+    return 2*np.pi*quad(lambda t_nu: S_nu(t_nu, nu)*E2(t_nu-tau_nu), a=tau_nu, b=np.inf)[0] - 2*np.pi*quad(lambda t_nu: S_nu(t_nu,nu)*E2(tau_nu-t_nu), a=0, b=tau_nu)[0]
 
 # CONSTANTS in gaussian units:
 h = 6.626*10**(-27) # [erg.s]
 k = 1.380649*10**(-16) # [erg/K]
 c = 2.99792458*10**(10) # [cm/s]
 
-taus = [3,1,0.3]
+taus = [3,1,0.3, .1] # Grey atmosphere, so kappa_nu = kappa, so tau is independent of nu
 T_eff = 5500 # [K]
 
-wavs = np.logspace(1e-5, 1e-3, 100) # in cm so that when converted to microns it goes from -1 to 1 in logspace
+wavs = np.logspace(-5, -3, 100) # in cm so that when converted to microns it goes from -1 to 1 in logspace
 freqs = c/wavs
-print(wavs)
-print(freqs)
-plt.plot(np.log(wavs*1e4), freqs, marker=".", ls="None")
+
+for tau in taus:
+  Fs = []
+  for f in freqs:
+    Fs.append(f_nu(f, tau))
+  plt.plot(np.log10(wavs*1e4), np.log10(np.array(Fs)*freqs), marker="None", ls="-", label=r"$\tau$"+f"$ = ${tau:.1f}")
+plt.xlabel(r"$\log \lambda$ [$\mathrm{\mu m}$]", fontsize=15)
+plt.ylabel(r"$\log \nu F_\nu$ [$\mathrm{erg \, cm^{-2} \, s^{-1}}$]", fontsize=15)
+plt.legend()
+plt.savefig("ASTRO530/hw1.pdf")
 plt.show()
-plt.plot(freqs, marker=".", ls="None")
-plt.show()
+
+# Integrate F over frequency at each tau:
+
+for tau in taus:
+  Flux_nu = lambda f: f_nu(f, tau)
+  Fs = [] # Sample the flux at different freqs
+  for f in freqs:
+    Fs.append(f_nu(f, tau))
+  Flux = np.trapezoid(Fs)
+  print(tau, Flux)
+  print(tau*T_eff**4)

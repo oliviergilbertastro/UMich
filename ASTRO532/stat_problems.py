@@ -28,5 +28,5 @@ plt.show()
 lams = list(lams)
 for lam in lams:
     plt.plot(ks, Ps[(lams.index(lam)),:], label=f"$\lambda$={lam}")
-    plt.legend()
-    plt.show()
+plt.legend()
+plt.show()
