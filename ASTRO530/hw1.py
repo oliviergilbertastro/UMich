@@ -51,18 +51,34 @@ for tau in taus:
     Fs.append(f_nu(f, tau))
   plt.plot(np.log10(wavs*1e4), np.log10(np.array(Fs)*freqs), marker="None", ls="-", label=r"$\tau$"+f"$ = ${tau:.1f}")
 plt.xlabel(r"$\log \lambda$ [$\mathrm{\mu m}$]", fontsize=15)
-plt.ylabel(r"$\log \nu F_\nu$ [$\mathrm{erg \, cm^{-2} \, s^{-1}}$]", fontsize=15)
+plt.ylabel(r"$\log \nu F_\nu$ [$\mathrm{erg \, cm^{-2} \, s^{-1} \, Hz^{-1}}$]", fontsize=15)
 plt.legend()
-plt.savefig("ASTRO530/hw1.pdf")
+plt.savefig("ASTRO530/hw1_a.pdf")
 plt.show()
 
 # Integrate F over frequency at each tau:
 
+sigma = 5.6704E-5 # erg cm^-2 Hz K^-4
+integrated_fluxes = []
 for tau in taus:
   Flux_nu = lambda f: f_nu(f, tau)
   Fs = [] # Sample the flux at different freqs
   for f in freqs:
     Fs.append(f_nu(f, tau))
-  Flux = np.trapezoid(Fs)
+  Flux = np.trapezoid(Fs, freqs)
+
+  Flux = np.trapezoid(Fs[::-1], freqs[::-1])
+
   print(tau, Flux)
-  print(tau*T_eff**4)
+  print(sigma*T_eff**4)
+  integrated_fluxes.append(Flux)
+plt.plot(taus, integrated_fluxes, ls="None", marker="o", color="black")
+plt.hlines(sigma*T_eff**4, 0, 3.1, linestyles="--", color="red", label=r"$\sigma T_\mathrm{eff}^4$")
+plt.fill_between([0, 3.1], y1=(sigma*T_eff**4)*0.99, y2=(sigma*T_eff**4)*1.01, color="red", alpha=0.5)
+plt.fill_between([0, 3.1], y1=(sigma*T_eff**4)*0.98, y2=(sigma*T_eff**4)*1.02, color="red", alpha=0.3)
+plt.fill_between([0, 3.1], y1=(sigma*T_eff**4)*0.97, y2=(sigma*T_eff**4)*1.03, color="red", alpha=0.1)
+plt.xlabel(r"$\tau$ [-]", fontsize=15)
+plt.ylabel(r"$F$ [$\mathrm{erg \, cm^{-2} \, s^{-1}}$]", fontsize=15)
+plt.legend(loc="upper right", fontsize=16)
+plt.savefig("ASTRO530/hw1_b.pdf")
+plt.show()
