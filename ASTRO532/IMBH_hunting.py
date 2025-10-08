@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.constants import Boltzmann, Stefan_Boltzmann, pi,h
 from scipy.integrate import quad
 
 h = 6.626*10**(-27) # [erg.s]
@@ -23,6 +22,7 @@ def get_infos(kT:float, flux_03_to_10:float, distance:float=3000) -> None:
    F_3_to_10_theo = get_theoretical_F_03_to_10_keV(kT)
    R_src = distance*(3.086E+13)*np.sqrt(flux_03_to_10/F_3_to_10_theo) # R in km
    print(f"Radius: {R_src:.3f} km")
+   print(f"Emitting area: {4*np.pi*R_src**2:.3f} km^2")
 
 src1_kT = 0.760297 # in keV
 src1_norm = 1.61602E-07
