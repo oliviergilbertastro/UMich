@@ -8,7 +8,7 @@ import astropy.units as u
 from astropy.constants import c, L_sun
 
 def flux(mag, zp):
-    return 10**((mag+48.958+zp)/(-2.5))*(10**(-20)*u.erg*(u.cm)**(-2)*(u.s)**(-1)*(u.Hz)**(-1))
+    return 10**((mag+48.598+zp)/(-2.5))*(u.erg*(u.cm)**(-2)*(u.s)**(-1)*(u.Hz)**(-1))
 
 #         U      B      V       R      I     J     H    K
 wavs = np.array([0.366, 0.438, 0.545, 0.641, 0.798, 1.22, 1.63, 2.19])*u.um
@@ -16,11 +16,14 @@ wavs = np.array([0.366, 0.438, 0.545, 0.641, 0.798, 1.22, 1.63, 2.19])*u.um
 mags = np.array([14.61, 13.50, 12.11, 11.23, 10.33, 9.15, 8.40, 8.25])
 mags_dereddened = np.array([13.86, 12.86, 11.63, 10.82, 10.03, 9.01, 8.31, 8.20])
 
+
 zps = np.array([-0.152, -0.602, 0.000, 0.555, 1.271, 2.655, 3.760, 4.906])
 
 fluxes = flux(mags_dereddened,zps)
 fluxes_uncorr = flux(mags,zps)
 freqs = c/wavs
+print(fluxes_uncorr)
+print(freqs)
 nuFnu = (freqs*fluxes).to(u.erg*(u.cm)**(-2)*(u.s)**(-1))
 nuFnu_uncorr = (freqs*fluxes_uncorr).to(u.erg*(u.cm)**(-2)*(u.s)**(-1))
 
@@ -30,6 +33,7 @@ plt.xlabel(r"$\log (\lambda)$ [$\mathrm{\mu m}$]")
 plt.ylabel(r"$\log (\nu F_\nu)$ [$\mathrm{erg/s/cm^2}$]")
 plt.legend(fontsize=15)
 plt.tight_layout()
+plt.savefig("ASTRO531/hw1_a.pdf")
 plt.show()
 
 
@@ -45,6 +49,7 @@ print(r)
 import astropy.constants as cst
 
 def planck(wav, T):
+    wav = wav.to(u.m)
     return 2*cst.h*cst.c**2*wav**(-5) / (np.exp(cst.h*cst.c/(wav*cst.k_B*T))-1)
 
 F_lambda_bbody = np.pi*planck(wavs, T_eff).to(u.erg*(u.cm)**(-2)*(u.s)**(-1)*(u.um)**(-1))
