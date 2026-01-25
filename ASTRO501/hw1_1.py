@@ -38,4 +38,15 @@ def magnitude_filter(wav0, percentage):
     denominator_flux = quad(lambda wav: f_Vega(wav), wav1.value, wav2.value)[0]
     return -2.5*np.log10(numerator_flux/denominator_flux)
 
-B = magnitude_filter(440*u.nm, percentage=0.01)
+B_01 = magnitude_filter(440*u.nm, percentage=0.01)
+V_01 = magnitude_filter(550*u.nm, percentage=0.01)
+BV_01 = B_01-V_01
+
+B_20 = magnitude_filter(440*u.nm, percentage=0.20)
+V_20 = magnitude_filter(550*u.nm, percentage=0.20)
+BV_20 = B_20-V_20
+
+print("(B-V)1%", np.around(BV_01, decimals=3))
+print("(B-V)20%", np.around(BV_20, decimals=3))
+
+print("Delta(B-V)", np.around(BV_20-BV_01, decimals=3))
