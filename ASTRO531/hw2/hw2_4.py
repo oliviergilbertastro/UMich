@@ -55,3 +55,12 @@ plt.legend()
 plt.tight_layout()
 plt.savefig(r"ASTRO531\hw2\hw2_4c2.pdf")
 plt.show()
+
+C_N_O_Ne_abundance = np.sum(10**((df[(df["Symbol"].isin(["C","N","O","Ne"]))])["A09"].values)* (df[(df["Symbol"].isin(["C","N","O","Ne"]))])["Atomic Weight"].values)
+Cr_Mn_Fe_Co_Ni_abundance = np.sum(10**((df[(df["Symbol"].isin(["Cr","Mn","Fe","Co","Ni"]))])["A09"].values)* (df[(df["Symbol"].isin(["Cr","Mn","Fe","Co","Ni"]))])["Atomic Weight"].values)
+total_abundance = H_abundance+He_abundance+metal_abundance
+
+Group1 = C_N_O_Ne_abundance/total_abundance
+Group2 = Cr_Mn_Fe_Co_Ni_abundance/total_abundance
+print("C_N_O_Ne_abundance:", Group1)
+print("Cr_Mn_Fe_Co_Ni_abundance:", Group2)
