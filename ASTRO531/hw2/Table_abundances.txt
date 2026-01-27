@@ -1,0 +1,38 @@
+-------------------------------------------------------------------
+     Element         Symbol   Atomic   Atomic     Abundances
+                              Number   Weight    A09       G98
+-------------------------------------------------------------------
+    Hydrogen           H         1      1.01    12.000    12.000
+      Helium          He         2      4.00    10.930    10.930
+     Lithium          Li         3      6.94     1.049     3.310
+   Beryllium          Be         4      9.01     1.380     1.420
+       Boron           B         5     10.81     2.700     2.790
+      Carbon           C         6     12.01     8.430     8.592
+    Nitrogen           N         7     14.01     7.830     7.931
+      Oxygen           O         8     16.00     8.689     8.736
+    Fluorine           F         9     19.00     4.560     4.480
+        Neon          Ne        10     20.18     7.930     8.001
+      Sodium          Na        11     22.99     6.241     6.320
+   Magnesium          Mg        12     24.31     7.600     7.538
+   Aluminium          Al        13     26.98     6.449     6.490
+     Silicon          Si        14     28.09     7.511     7.536
+  Phosphorus           P        15     30.97     5.410     5.560
+      Sulfur           S        16     32.07     7.121     7.199
+    Chlorine          Cl        17     35.45     5.500     5.281
+       Argon          Ar        18     39.95     6.400     6.400
+   Potassium           K        19     39.10     5.029     5.130
+     Calcium          Ca        20     40.08     6.340     6.350
+    Scandium          Sc        21     44.96     3.149     3.100
+    Titanium          Ti        22     47.90     4.950     4.940
+    Vanadium           V        23     50.94     3.930     4.021
+    Chromium          Cr        24     52.00     5.640     5.690
+   Manganese          Mn        25     54.94     5.430     5.530
+        Iron          Fe        26     55.85     7.500     7.448
+      Cobalt          Co        27     58.93     4.990     4.910
+      Nickel          Ni        28     58.71     6.220     6.250
+      Copper          Cu        29     63.55     4.500     4.290
+        Zinc          Zn        30     65.37     4.199     4.670
+-------------------------------------------------------------------
+A09 = Asplund et al. 2009, ARAA, 47, 481
+G98 = Grevesse and Sauval Sp.Sci.Rev.,85,161,1998
+Abundances in log(number), in a scale where H is 12

@@ -5,9 +5,10 @@ mpl.rcParams['xtick.labelsize'] = 16
 mpl.rcParams['ytick.labelsize'] = 16
 plt.rc("axes", labelsize=16) 
 import astropy.units as u
-from astropy.constants import c, L_sun
+import astropy.constants as cst
 import mesa_web as m
 from tqdm import tqdm
+from scipy.integrate import trapezoid
 
 try:
     hist = m.read_history(r"ASTRO531\hw2\MESA-Web_Job_01252661968\trimmed_history.data", as_table=True)
@@ -31,11 +32,14 @@ try:
 except:
     table = m.read_profile(r"ASTRO531/hw2/MESA-Web_Job_01252661968/profile8.data", as_table=True)
 print(table.columns)
-E_int = table["energy"] # as a cumulative function of radius  
-U = E_int[-1]
-E_grav = 0
-
-print(U)
+E_int = table["energy"]*(u.erg/u.g)
+M = table["mass"]*(u.M_sun)
+R = table["radius"]*u.R_sun
+U = trapezoid(E_int, M).to(u.erg) # Integrate the internal energy per unit mass over the mass
+E_grav = trapezoid(-cst.G*M/R, M).to(u.erg) # Integrate the gravitational potential energy per unit mass over the mass
+print("U:", U)
+print("E_grav:", E_grav)
+print("U/E_grav:", U/E_grav)
 plt.plot(table["mass"])
 plt.plot(table["radius"])
 plt.show()
