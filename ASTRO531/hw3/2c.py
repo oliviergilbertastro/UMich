@@ -21,7 +21,7 @@ def F_32(alpha):
     return (fermi_ints[fermi_ints["alpha"] == alpha])["2/3 F_3/2"].values
 
 def n_e(alpha, T):
-    return 4*np.pi/cst.h**3 *(2*cst.m_e*cst.k_B*T)**(2/3) * F_12(alpha)
+    return 4*np.pi/cst.h**3 *(2*cst.m_e*cst.k_B*T)**(3/2) * F_12(alpha)
 
 def P_e(alpha, T):
     return n_e(alpha,T)*cst.k_B*T*F_32(alpha)/F_12(alpha)
