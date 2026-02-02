@@ -38,10 +38,10 @@ for T in [1E7, 1E8, 1E9]:
     n_es = n_e(alphas, T*u.K).to(u.cm**-3)
     Pressures = P_e(alphas, T*u.K)
     print(n_es)
-    plt.plot(n_es, np.log10(Pressures.value), ls="-", marker="None", label=r"$T=10^{"+f"{np.around(np.log10(T))}"+r"}K")
+    plt.plot(np.log10(n_es.value), np.log10(Pressures.value), ls="-", marker="None", label=r"$T=10^{"+f"{np.around(np.log10(T))}"+r"}K")
     pass
 
-plt.xlabel(r"$n_e$ [$-$]")
+plt.xlabel(r"$\log n_e$ [$\mathrm{cm^{-3}}$]")
 plt.ylabel(r"$\log P_e$ [$-$]")
 plt.legend(fontsize=14)
 plt.tight_layout()
