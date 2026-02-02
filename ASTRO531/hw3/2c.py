@@ -8,7 +8,11 @@ import astropy.units as u
 import astropy.constants as cst
 import pandas as pd
 
-fermi_ints = pd.read_csv(r"ASTRO531\hw3\FermiDiracIntegrals.txt", delim_whitespace=True)
+try:
+    fermi_ints = pd.read_csv(r"ASTRO531\hw3\FermiDiracIntegrals.txt", delim_whitespace=True)
+except:
+    fermi_ints = pd.read_csv(r"ASTRO531/hw3/FermiDiracIntegrals.txt", delim_whitespace=True)
+
 print(fermi_ints.columns)
 fermi_ints["2/3 F_3/2"] = fermi_ints["2/3"]
 fermi_ints["F_1/2"] = fermi_ints["F_3/2"]
@@ -34,11 +38,11 @@ for T in [1E7, 1E8, 1E9]:
     n_es = n_e(alphas, T*u.K).to(u.cm**-3)
     Pressures = P_e(alphas, T*u.K)
     print(n_es)
-    plt.plot(n_es, Pressures, ls="-", marker="None", label=r"$T=10^{"+f"{np.around(np.log10(T))}"+r"}K")
+    plt.plot(n_es, np.log10(Pressures.value), ls="-", marker="None", label=r"$T=10^{"+f"{np.around(np.log10(T))}"+r"}K")
     pass
 
 plt.xlabel(r"$n_e$ [$-$]")
-plt.ylabel(r"P_e [$-$]")
+plt.ylabel(r"$\log P_e$ [$-$]")
 plt.legend(fontsize=14)
 plt.tight_layout()
 plt.savefig(r"ASTRO531\hw3\2c.pdf")
