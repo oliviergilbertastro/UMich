@@ -59,14 +59,13 @@ def get_F12_from_output(rho, T, n_e):
 
 rhos = (10**table["logRho"])*(u.g/u.cm**3)
 temperatures = (10**table["logT"])*(u.K)
-nes = (table["free_e"])*(u.cm**-3)
+nes = (table["free_e"])*((u.cm**-3))
+print(nes)
 etas = table["eta"]
 table_alpha = -etas
 F_12s = get_F12_from_output(rhos, temperatures, nes)
+print(F_12s)
 alphas = get_alpha_from_F_12(F_12s)
-
-print(table_alpha)
-print(alphas)
 
 plt.plot(alphas, table_alpha, lw=2, ls="-", color="red")
 plt.plot([np.min(alphas),np.max(alphas)],[np.min(alphas),np.max(alphas)],ls="--", color="black", lw=2)
