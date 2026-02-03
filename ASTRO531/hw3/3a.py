@@ -59,7 +59,9 @@ def get_F12_from_output(rho, T, n_e):
 
 rhos = (10**table["logRho"])*(u.g/u.cm**3)
 temperatures = (10**table["logT"])*(u.K)
-nes = (table["free_e"])*((u.cm**-3))
+n_free = (table["free_e"])/(u.cm**3)
+mus = table["mu"]
+nes = rhos/(mus*u.u * (1+1/n_free.value)) # Get n_e from n_free
 print(nes)
 etas = table["eta"]
 table_alpha = -etas
