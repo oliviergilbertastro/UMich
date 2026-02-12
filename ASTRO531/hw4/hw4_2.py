@@ -22,9 +22,9 @@ t = t[t['Mwd'] != 0.00]
 Ms = t["Mwd"]*u.M_sun
 print(Ms)
 Rs = np.sqrt(cst.G*Ms/(10**t["logg"]*(u.cm/u.s**2)))
-Rs.to(u.R_sun)
+Rs = Rs.to(u.R_sun)
 x,y = np.log10(Rs.value), np.log10(Ms.value)
-mask = ~np.isnan(x) & ~np.isnan(y) & (x<-9.4)
+mask = ~np.isnan(x) & ~np.isnan(y) & (x<-2)
 x_fit = x[mask]
 y_fit = y[mask]
 from scipy.optimize import curve_fit
