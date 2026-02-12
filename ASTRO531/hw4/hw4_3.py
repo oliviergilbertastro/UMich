@@ -16,7 +16,7 @@ rho_c = rho_avg/csts
 print(rho_c)
 
 xi1 = 6.89685
-a = xi1*cst.R_sun
+a = cst.R_sun/xi1
 print(a.to(u.cm))
 
 K = a**2*np.pi *cst.G * rho_c**(2/3)
@@ -36,13 +36,13 @@ plt.figure()
 plt.plot(r, rho, color="black", ls="-", marker="None")
 plt.xlabel(r"$r$ [$cm$]")
 plt.ylabel(r"$\rho$ [$\mathrm{g/cm^3}$]")
-plt.xscale("log")
+#plt.xscale("log")
 plt.tight_layout()
 plt.savefig(r"ASTRO531/hw4/hw4_3_rho.pdf")
 plt.show()
 plt.figure()
 plt.plot(r, pressure, color="black", ls="-", marker="None")
-plt.xscale("log")
+#plt.xscale("log")
 plt.xlabel(r"$r$ [$cm$]")
 plt.ylabel(r"$P$ [$\mathrm{dyn/cm^2}$]")
 plt.tight_layout()
