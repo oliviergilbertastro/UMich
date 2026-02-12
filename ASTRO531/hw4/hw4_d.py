@@ -7,6 +7,13 @@ plt.rc("axes", labelsize=16)
 import astropy.units as u
 import astropy.constants as cst
 from tqdm import tqdm
+import mesa_web as m
+
+try:
+    table = m.read_profile(r"ASTRO531\hw2\MESA-Web_Job_01252661968\profile8.data", as_table=True)
+except:
+    table = m.read_profile(r"ASTRO531/hw2/MESA-Web_Job_01252661968/profile8.data", as_table=True)
+print(table.columns)
 
 Chi_H = 13.6*u.eV
 def saha(rho, T):
@@ -44,9 +51,13 @@ cb = plt.colorbar(img)
 cb.set_label(r"$\Gamma_3$", fontsize=15)
 plt.contour(Gammas,levels=[4/3],colors='white',linewidths=2,extent=(-15,1,3.4,5))
 plt.contour(Ys,levels=[0.01, 0.99],colors=['blue', 'red'],linewidths=2,origin="lower",extent=(-15,1,3.4,5))
+plt.plot(table["logRho"], table["logT"], color="green", lw=4, ls="--", marker="None", label="MESA")
 plt.xlabel(r"$\log \rho$ [$\mathrm{g/cm^3}$]")
 plt.ylabel(r"$\log T$ [$\mathrm{K}$]")
+plt.xlim(-15,1)
+plt.ylim(3.4,5)
+plt.legend(fontsize=14)
 plt.tight_layout()
-plt.savefig(r"ASTRO531/hw4/hw4_4c.pdf")
+plt.savefig(r"ASTRO531/hw4/hw4_4d.pdf")
 plt.show()
 
