@@ -210,5 +210,6 @@ __marimo__/
 
 ASTRO501/hw1b/**.fits.fz
 ASTRO501/hw2b/HW2b_v2.ipynb
+ASTRO501/hw2b/HW2b_v2.html
 ASTRO501/hw2b/data/hr8799/**.fits
 ASTRO501/hw2b/data/darks/**.fits
