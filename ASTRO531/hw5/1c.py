@@ -75,9 +75,9 @@ for i in R_indices:
     plt.plot(table_73[0], table_73[2][:,i], color=last_col, label=f"Solar $\log R$={table_73[1][i]:.1f}")
     plt.plot(table_1[0], table_1[2][:,i], ls=":", color=last_col, label=f"He $\log R$={table_1[1][i]:.1f}")
 
-plt.xlabel(r"$\log(T)$ [$\mathrm{10^6 K}$]")
+plt.xlabel(r"$\log(T)$ [$\mathrm{K}$]")
 plt.ylabel(r"$\log$ RMO [$\mathrm{cm^2/g}$]")
-plt.legend(ncol=3, fontsize=10)
+plt.legend(ncol=3, fontsize=10, loc="upper right")
 plt.tight_layout()
 plt.savefig(r"ASTRO531/hw5/plot1c.pdf")
 plt.show()

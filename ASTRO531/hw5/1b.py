@@ -75,7 +75,7 @@ for i in R_indices:
     plt.plot(table_73[0], table_73[2][:,i], color=last_col, label=f"Z=0.02 $\log R$={table_73[1][i]:.1f}")
     plt.plot(table_78[0], table_78[2][:,i], ls=":", color=last_col, label=f"Z=0.1 $\log R$={table_78[1][i]:.1f}")
 
-plt.xlabel(r"$\log(T)$ [$\mathrm{10^6 K}$]")
+plt.xlabel(r"$\log(T)$ [$\mathrm{K}$]")
 plt.ylabel(r"$\log$ RMO [$\mathrm{cm^2/g}$]")
 plt.legend(ncol=3, fontsize=10)
 plt.tight_layout()

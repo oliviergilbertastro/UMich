@@ -73,7 +73,7 @@ for i in R_indices:
     last_col = plt.gca().lines[-1].get_color()
     plt.plot(table_73[0], table_73[2][:,i], color=last_col, label=f"Solar $\log R$={table_73[1][i]:.1f}")
 
-plt.xlabel(r"$\log(T)$ [$\mathrm{10^6 K}$]")
+plt.xlabel(r"$\log(T)$ [$\mathrm{K}$]")
 plt.ylabel(r"$\log$ RMO [$\mathrm{cm^2/g}$]")
 plt.legend(ncol=2, fontsize=10)
 plt.tight_layout()
