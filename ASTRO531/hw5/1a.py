@@ -1,5 +1,11 @@
 import numpy as np
 import astropy.units as u
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+mpl.rcParams['xtick.labelsize'] = 16
+mpl.rcParams['ytick.labelsize'] = 16
+plt.rc("axes", labelsize=16) 
 
 def read_opacity_table(table_num):
     """
@@ -54,12 +60,22 @@ def read_opacity_table(table_num):
     logT = np.array(logT)
     kappa = np.array(kappa)
 
-    return logT, logR, kappa
+    return (logT, logR, kappa)
 
-logT, logR, kappa = read_opacity_table(table_num=115)
-table_115 = (logT, logR, kappa)
+table_115 = read_opacity_table(table_num=115)
+table_73 = read_opacity_table(table_num=73)
 
-print(logT.shape)   # ~70
-print(logR.shape)   # 19
-print(kappa.shape)  # (70,19)
-print(kappa)
+R_indices = np.arange(0, len(table_115[1]), 2)
+
+plt.figure(figsize=(10,7))
+for i in R_indices:
+    plt.plot(table_115[0], table_115[2][:,i], ls="--", label=rf"H $\log R$={table_115[1][i]:.1f}")
+    last_col = plt.gca().lines[-1].get_color()
+    plt.plot(table_73[0], table_73[2][:,i], color=last_col, label=f"Solar $\log R$={table_73[1][i]:.1f}")
+
+plt.xlabel(r"$\log(T)$ [$\mathrm{10^6 K}$]")
+plt.ylabel(r"$\log$ RMO [$\mathrm{cm^2/g}$]")
+plt.legend(ncol=2, fontsize=10)
+plt.tight_layout()
+plt.savefig(r"ASTRO531/hw5/plot1a.pdf")
+plt.show()
