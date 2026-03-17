@@ -21,10 +21,10 @@ logT = (table["logT"])
 
 plt.figure(figsize=(10,8))
 ax = plt.subplot(211)
-ax.plot(logT, rmo)
+ax.plot(logT, np.log10(rmo.value), lw=2, color="blue", label="MESA sun-like star")
 ax.invert_xaxis()
 ax.set_xlabel(r"$T$ [K]")
-ax.set_ylabel(r"RMO [$\mathrm{cm^2/g}$]")
+ax.set_ylabel(r"$\log$ RMO [$\mathrm{cm^2/g}$]")
 
 
 
@@ -70,17 +70,20 @@ ax2.plot(logT, HI_mass_frac, ls="-", lw=2, color="red", label="HI")
 ax2.plot(logT, HII_mass_frac, ls="--", lw=2, color="red", label="HII")
 ax2.plot(logT, HeI_mass_frac, ls="-", lw=2, color="blue", label="HeI")
 ax2.plot(logT, HeII_mass_frac, ls="--", lw=2, color="blue", label="HeII")
-ax2.plot(logT, HeII_mass_frac, ls="-.", lw=2, color="blue", label="HeIII")
+ax2.plot(logT, HeIII_mass_frac, ls="-.", lw=2, color="blue", label="HeIII")
 ax2.legend()
 ax2.set_xlabel(r"$\log T$ [$\mathrm{K}$]")
 ax2.set_ylabel(r"Number fraction")
 
 
 
-
-
-
-
+sigma_T = 6.65E-25*u.cm**2
+mu_e = 1.1435
+kappa_s = sigma_T/(mu_e*u.u)
+kappa_s = kappa_s.to(u.cm**2/u.g)
+print(kappa_s)
+ax.axhline(np.log10(kappa_s.value), ls="--", color="black", label=r"$\kappa_T$")
+ax.legend(fontsize=12)
 
 plt.tight_layout()
 plt.savefig(r"ASTRO531\hw5\plot2a.pdf")
