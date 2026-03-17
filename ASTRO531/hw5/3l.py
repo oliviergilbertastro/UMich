@@ -36,46 +36,12 @@ H_P = P / (rho * g) # Pressure scale height
 H_P = H_P.to(u.R_sun)
 
 
+conv = grad_R > grad_a
 
-nu = 2.21E-15*T**(5/2)/(rho*10)*(u.g/u.cm/u.s/u.K**(5/2))
-Rey = v_conv*H_P/nu
-Rey = Rey.decompose()
+l_ = np.mean(H_P[conv])
+v_conv_ = np.mean(v_conv[conv])
 
-P_turb_P = (v_conv/cs)**2
-P_turb_P = P_turb_P.decompose()
-
-from scipy.interpolate import interp1d
-x_primary = np.array(logT)
-x_top_vals = np.array(R)
-# your data
-
-
-plt.figure(figsize=(8,6))
-
-ax2 = plt.subplot(111)
-ax2.plot(logT, P_turb_P, ls="-", lw=2, color="red")
-ax2.legend(fontsize=17)
-ax2.invert_xaxis()
-ax2.set_xlabel(r"$\log T$ [$\mathrm{K}$]")
-ax2.set_ylabel(r"$P_\mathrm{turb}/P$")
-ax2.set_yscale("log")
-# create top axis
-secax = ax2.twiny()
-secax.set_xlim(ax2.get_xlim())
-
-# choose clean points
-xticks = ax2.get_xticks()
-logT_arr = np.array(logT)
-inds = [np.argmin(np.abs(logT_arr - xt)) for xt in xticks]
-inds = np.unique(inds)  # avoid duplicates
-inds = inds[1:-1]
-print(len(x_primary))
-print(inds)
-print(x_primary[inds])
-secax.set_xticks(x_primary[inds])
-secax.set_xticklabels([f"{x_top_vals[i]:.2f}" for i in inds])
-secax.set_xlabel(r"Radius [$R_\odot$]")
-ax2.set_ylim(bottom=0)
-plt.tight_layout()
-plt.savefig(r"ASTRO531\hw5\plot3k.pdf")
-plt.show()
+timescale = (l_/v_conv_).to(u.s)
+print(timescale)
+timescale =timescale.to(u.hour)
+print(timescale)
