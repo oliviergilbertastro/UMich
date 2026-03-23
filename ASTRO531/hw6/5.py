@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 L = cst.L_sun
 M = cst.M_sun
-R_0 = cst.R_sun
+R_0 = 4*cst.R_sun
 G = cst.G
 alpha = 6/7
 
@@ -55,3 +55,6 @@ ax2.set_ylabel(r"$T_c(t)$ [$\mathrm{K}$]")
 plt.tight_layout()
 plt.savefig(r"ASTRO531\hw6\plot_temp.pdf")
 plt.show()
+
+t_KH = G*M**2/(2*R_0*L)
+print(t_KH.to(u.Myr))
