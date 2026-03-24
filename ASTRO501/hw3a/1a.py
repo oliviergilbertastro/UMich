@@ -15,3 +15,9 @@ print(T_B.to(u.K/u.sr))
 
 theta_beam = (1*u.cm)**2/(500*u.m**2)
 print(theta_beam.decompose())
+
+import numpy as np
+
+img_fov = np.array([650,500])*5*u.arcsec
+img_fov= img_fov.to(u.degree)
+print(img_fov)
