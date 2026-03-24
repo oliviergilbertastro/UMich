@@ -14,4 +14,4 @@ T_B = 1.0*(u.mJy)*(1*u.cm)**2/(((3*u.deg**2).to(u.sr))*(1.38E-23*(u.J/u.K)))
 print(T_B.to(u.K/u.sr))
 
 theta_beam = (1*u.cm)**2/(500*u.m**2)
-print(theta_beam.to(u.deg**2))
+print(theta_beam.decompose())
