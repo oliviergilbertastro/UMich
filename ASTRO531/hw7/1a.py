@@ -51,13 +51,16 @@ idxs = [186,204,219]
 
 plt.figure(figsize=(6,6))
 ax = plt.subplot(111)
-ax.plot(hist_pre_main["log_Teff"], hist_pre_main["log_L"], color="black", label="PMS evolutionary track")
+print(hist_pre_main["log_Teff"])
+ax.plot(hist_pre_main["log_Teff"][59:], hist_pre_main["log_L"][59:], color="black", ls="-", lw=5, alpha=0.6, label="PMS evolutionary track")
 for i in range(len(idxs)):
     this_hist = hist[hist["model_number"] == idxs[i]]
-    ax.plot(this_hist["log_Teff"], this_hist["log_L"], ls="None", marker="o", color="red", label="Selected PMS models")
-    ax.text(this_hist["log_Teff"], this_hist["log_L"], [r"$\mathrm{1.54Myr}$",r"$\mathrm{8.43Myr}$",r"$\mathrm{20.3Myr}$",][i])
+    ax.plot(this_hist["log_Teff"], this_hist["log_L"], ls="None", marker="o", color="red", label=("Selected PMS models" if i==0 else None))
+    ax.text(this_hist["log_Teff"], this_hist["log_L"], [r"$\mathrm{1.54Myr}$",r"$\mathrm{8.43Myr}$",r"$\mathrm{20.3Myr}$",][i], fontsize=16)
 ax.invert_xaxis()
 ax.set_xlabel(r"$\log T_\mathrm{eff}$ [K]")
 ax.set_ylabel(r"$\log L$ [$L_\odot$]")
 ax.legend(fontsize=15)
+plt.tight_layout()
+plt.savefig("ASTRO531/hw7/1a.pdf")
 plt.show()
