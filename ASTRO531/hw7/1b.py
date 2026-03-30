@@ -49,7 +49,6 @@ model_204 = m.read_profile(r"ASTRO531/hw7/MESA-Web_Job_03292665778/profile103.da
 model_219 = m.read_profile(r"ASTRO531/hw7/MESA-Web_Job_03292665778/profile111.data", as_table=True)
 idxs = [186,204,219]
 
-print(model_186.columns)
 def get_attributes(table):
     rmo = table["opacity"]*(u.cm**2/u.g)
     grad_a = table["grada"]
@@ -62,18 +61,75 @@ def get_attributes(table):
     Prad = table['prad']
     Ptot = Pgas + Prad
     beta = Pgas / Ptot
-    gamma2 = (32 - 24*beta-3*beta**2) / (24-14*beta-3*beta**2)
+    gamma2 = (32 - 24*beta-3*beta**2) / (24-18*beta-3*beta**2)
     return logT, R, rho, grad_a, grad_R, grad_T, rmo, gamma2
 
 atr_186, atr_204, atr_219 = get_attributes(model_186), get_attributes(model_204), get_attributes(model_219)
 
-plt.figure(figsize=(6,6))
-ax = plt.subplot(111)
-ax.plot(atr_186[0], atr_186["log_L"], ls="None", marker="o", color="red", label=("Selected PMS models" if i==0 else None))
-ax.invert_xaxis()
-ax.set_xlabel(r"$\log T_\mathrm{eff}$ [K]")
-ax.set_ylabel(r"$\log L$ [$L_\odot$]")
-ax.legend(fontsize=15)
+plt.figure(figsize=(8,9))
+for i, atr in enumerate([atr_186, atr_204, atr_219]):
+    ax = plt.subplot(3,1,i+1)
+    ax.plot(atr[0], atr[3], ls=":", marker="None", color="red", label=r"$\nabla_a$")
+    ax.plot(atr[0], atr[4], ls="--", marker="None", color="blue", label=r"$\nabla_R$")
+    ax.plot(atr[0], atr[5], ls="-", marker="None", color="black", label=r"$\nabla$")
+    x_lims = ax.get_xlim()
+    ax.text((x_lims[1]-x_lims[0])/4+x_lims[0], 0.8, ["1.54Myr","8.43Myr","20.3Myr"][i],fontsize=17)
+    ax.invert_xaxis()
+    ax.set_ylim(0,1)
+    ax.legend(fontsize=15)
+ax.set_ylabel(r"")
+ax.set_xlabel(r"$\log T$ [K]")
 plt.tight_layout()
-plt.savefig("ASTRO531/hw7/1b.pdf")
+plt.savefig("ASTRO531/hw7/1bi.pdf")
+plt.show()
+
+plt.figure(figsize=(7,6))
+ax = plt.subplot(111)
+for i, atr in enumerate([atr_186, atr_204, atr_219]):
+    ax.plot(atr[0], np.log10(atr[6].value), ls="-", marker="None", label=["1.54Myr","8.43Myr","20.3Myr"][i])
+    ax.invert_xaxis()
+ax.set_ylabel(r"$\log$ RMO [$\mathrm{cm^2/g}$]")
+ax.legend(fontsize=15)
+ax.set_xlabel(r"$\log T$ [K]")
+plt.tight_layout()
+plt.savefig("ASTRO531/hw7/1bii.pdf")
+plt.show()
+
+plt.figure(figsize=(7,6))
+ax = plt.subplot(111)
+for i, atr in enumerate([atr_186, atr_204, atr_219]):
+    ax.plot(atr[0], atr[7].value, ls="-", marker="None", label=["1.54Myr","8.43Myr","20.3Myr"][i])
+    ax.invert_xaxis()
+ax.axhline(5/3, label="Monoatomic gas", color="black", ls=":")
+ax.legend(fontsize=15)
+ax.set_ylabel(r"$\Gamma_2$")
+ax.set_xlabel(r"$\log T$ [K]")
+plt.tight_layout()
+plt.savefig("ASTRO531/hw7/1biii.pdf")
+plt.show()
+
+plt.figure(figsize=(7,6))
+ax = plt.subplot(111)
+for i, atr in enumerate([atr_186, atr_204, atr_219]):
+    ax.plot(atr[0], atr[1].value, ls="-", marker="None", label=["1.54Myr","8.43Myr","20.3Myr"][i])
+    ax.invert_xaxis()
+ax.legend(fontsize=15)
+ax.set_ylabel(r"$R$ [$\mathrm{R_\odot}$]")
+ax.set_xlabel(r"$\log T$ [K]")
+plt.tight_layout()
+plt.savefig("ASTRO531/hw7/1biv.pdf")
+plt.show()
+
+
+plt.figure(figsize=(7,6))
+ax = plt.subplot(111)
+for i, atr in enumerate([atr_186, atr_204, atr_219]):
+    ax.plot(atr[0], atr[2].value, ls="-", marker="None", label=["1.54Myr","8.43Myr","20.3Myr"][i])
+    ax.invert_xaxis()
+ax.legend(fontsize=15)
+ax.set_ylabel(r"$\rho$ [$g/cm^3$]")
+ax.set_yscale("log")
+ax.set_xlabel(r"$\log T$ [K]")
+plt.tight_layout()
+plt.savefig("ASTRO531/hw7/1bv.pdf")
 plt.show()
