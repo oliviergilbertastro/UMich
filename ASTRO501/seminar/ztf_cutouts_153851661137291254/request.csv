@@ -1,0 +1,7 @@
+,"<?xml version=""1.0"" encoding=""utf-8""?>"
+0,"<VOTABLE version=""1.3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://www.ivoa.net/xml/VOTable/v1.3"" xsi:schemaLocation=""http://www.ivoa.net/xml/VOTable/v1.3 http://www.ivoa.net/xml/VOTable/v1.3"">"
+1,  <DESCRIPTION>Caltech/IPAC-IRSA Image Backend Service</DESCRIPTION>
+2,"  <RESOURCE type=""results"">"
+3,"    <INFO name=""QUERY_STATUS"" value=""ERROR"">UsageFault: BAD_REQUEST: The value of parameter &apos;POS&apos; could not be converted to a number: CIRCLE</INFO>"
+4,  </RESOURCE>
+5,</VOTABLE>

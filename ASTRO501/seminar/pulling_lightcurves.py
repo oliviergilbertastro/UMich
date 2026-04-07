@@ -6,13 +6,18 @@ plt.rc("axes", labelsize=16)
 import astropy.units as u
 import astropy.constants as cst
 import numpy as np
-
+import pandas as pd
+from urllib.parse import urlencode
 
 ra, dec = 166.1138,	38.2088
 
-import pandas as pd
+params = {
+    "POS": f"CIRCLE {ra} {dec} 0.001",
+    "FORMAT": "csv"
+}
 
-url = f"https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves?POS=CIRCLE {ra} {dec} 0.001&FORMAT=csv"
+url = "https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves?" + urlencode(params)
+print(url)
 df = pd.read_csv(url)
-
-print(df["objectid"].unique())
+df.to_csv("ASTRO501/seminar/ztf_lc.csv")
+print(df.head())
