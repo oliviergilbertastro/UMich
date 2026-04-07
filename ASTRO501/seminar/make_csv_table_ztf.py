@@ -21,7 +21,7 @@ import numpy as np
 
 
 
-def net_flux(image, target_pos, noise_level, radius=40):
+def net_flux(image, target_pos, noise_level, radius=40, if_plot=False):
     '''
     Calculates the approximate flux of a source by substracting the noise of its nearby background
 
@@ -43,7 +43,7 @@ def net_flux(image, target_pos, noise_level, radius=40):
 
     flux_within = within_flux
     flux_source = flux_within - (noise_level)*pixels_inside
-    if True:
+    if if_plot:
         fig, ax1 = plt.subplots(1, 1)
         #fig.suptitle(f'Net flux of source: {flux_source}')
 
@@ -54,25 +54,26 @@ def net_flux(image, target_pos, noise_level, radius=40):
         plt.show()
     return flux_source
 
-counts = []
-for filefracday in df_selected_images["filefracday"].values:
-    img, psf = get_image(filefracday)
-    print(img.info())
-    #plt.imshow(img[0].data, origin="lower", cmap="Greys")
-    plt.figure()
-    vals, bins = np.histogram(np.nan_to_num(img[0].data,nan=0), bins=np.linspace(0,np.quantile(img[0].data,0.8),100))
-    max_index = np.argmax(vals)
-    # Compute bin centers
-    bin_centers = 0.5 * (bins[1:] + bins[:-1])
-    # Get x-value corresponding to max bin
-    noise_val = bin_centers[max_index]
-    plt.stairs(vals, bins, fill=True, color="black")
-    plt.axvline(noise_val, ls="--", color="red")
-    print(noise_val)
-    counts.append(net_flux(img[0].data, target_pos=(15,15), radius=12, noise_level=noise_val))
-    plt.show()
+if __name__ == "__main__":
+    counts = []
+    for filefracday in df_selected_images["filefracday"].values:
+        img, psf = get_image(filefracday)
+        print(img.info())
+        #plt.imshow(img[0].data, origin="lower", cmap="Greys")
+        plt.figure()
+        vals, bins = np.histogram(np.nan_to_num(img[0].data,nan=0), bins=np.linspace(0,np.quantile(img[0].data,0.8),100))
+        max_index = np.argmax(vals)
+        # Compute bin centers
+        bin_centers = 0.5 * (bins[1:] + bins[:-1])
+        # Get x-value corresponding to max bin
+        noise_val = bin_centers[max_index]
+        plt.stairs(vals, bins, fill=True, color="black")
+        plt.axvline(noise_val, ls="--", color="red")
+        print(noise_val)
+        counts.append(net_flux(img[0].data, target_pos=(15,15), radius=12, noise_level=noise_val))
+        plt.show()
 
-plt.plot(df_selected_images["mjd"], counts, marker="o", ls="None")
-plt.show()
-plt.plot(df_selected_images["mjd"], df_selected_images["seeing"], marker="o", ls="None")
-plt.show()
+    plt.plot(df_selected_images["mjd"], counts, marker="o", ls="None")
+    plt.show()
+    plt.plot(df_selected_images["mjd"], df_selected_images["seeing"], marker="o", ls="None")
+    plt.show()
