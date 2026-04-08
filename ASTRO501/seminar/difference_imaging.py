@@ -93,7 +93,7 @@ if __name__ == "__main__":
     imgs, psfs = [], []
     for i, filefracday in enumerate(df["filefracday"].values):
         img, psf = get_image(filefracday)
-        if i == 4:
+        if i == 1:
             reference_img, reference_psf = img, psf
         else:
             imgs.append(img)
