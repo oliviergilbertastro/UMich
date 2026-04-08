@@ -72,15 +72,15 @@ def difference_image(img, psf, ref_img, ref_psf, if_plot=False):
         plt.figure(figsize=(15,5))
 
         plt.subplot(1,3,1)
-        plt.imshow(ref_data, origin="lower", cmap="gray")
+        plt.imshow(np.log10(ref_data), origin="lower", cmap="gray")
         plt.title("Reference")
 
         plt.subplot(1,3,2)
-        plt.imshow(img_data, origin="lower", cmap="gray")
+        plt.imshow(np.log10(img_data), origin="lower", cmap="gray")
         plt.title("Image")
 
         plt.subplot(1,3,3)
-        plt.imshow(diff, origin="lower", cmap="gray")#, vmin=-v, vmax=v)
+        plt.imshow(np.log10(diff), origin="lower", cmap="gray")#, vmin=-v, vmax=v)
         plt.title("Difference")
 
         plt.show()
@@ -92,19 +92,25 @@ if __name__ == "__main__":
 
     imgs, psfs = [], []
     for i, filefracday in enumerate(df["filefracday"].values):
-        img, psf = get_image(filefracday)
-        if i == 1:
+        img, psf = get_image(filefracday, field=True)
+        if i == 5:
             reference_img, reference_psf = img, psf
         else:
             imgs.append(img)
             psfs.append(psf)
 
+    mask = np.zeros_like(reference_img, dtype=bool)
+    mask[0:460,240:265] = True
+    reference_img[mask==1] = np.nan
+
     diffs = []
     for i in range(len(imgs)):
-        diffs.append(difference_image(imgs[i], psfs[i], reference_img, reference_psf, if_plot=True))
+        #diffs.append(difference_image(imgs[i], psfs[i], reference_img, reference_psf, if_plot=True))
+        diffs.append(difference_image(reference_img, reference_psf, imgs[i], psfs[i], if_plot=True))
     plt.figure(figsize=(25,6))
     for i in range(len(diffs)):
         ax = plt.subplot(1,len(diffs),i+1)
-        ax.imshow(diffs[i], origin="lower", cmap="gray")
+        v = 3 * np.std(diffs[i])
+        ax.imshow(diffs[i], origin="lower", cmap="gray", vmin=-v, vmax=v)
     plt.show()
     
