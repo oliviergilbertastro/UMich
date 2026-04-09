@@ -68,6 +68,7 @@ if __name__ == "__main__":
         noise_val = bin_centers[max_index]
         plt.stairs(vals, bins, fill=True, color="black")
         plt.axvline(noise_val, ls="--", color="red")
+        plt.axvline(np.nanmedian(img[0].data), ls="--", color="blue")
         plt.xlabel("Pixel value")
         plt.ylabel("Count")
         print(noise_val)
