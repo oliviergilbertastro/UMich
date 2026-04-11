@@ -212,3 +212,71 @@ plt.title(r"5$M_\odot$",fontsize=16)
 plt.tight_layout()
 plt.savefig("ASTRO531/hw8/figures/1b_5_gradients.pdf")
 plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+import pandas as pd
+# ALPHA DEGEN
+try:
+    fermi_ints = pd.read_csv(r"ASTRO531\hw3\FermiDiracIntegrals.txt", delim_whitespace=True)
+except:
+    fermi_ints = pd.read_csv(r"ASTRO531/hw3/FermiDiracIntegrals.txt", delim_whitespace=True)
+
+
+fermi_ints["2/3 F_3/2"] = fermi_ints["2/3"]
+fermi_ints["F_1/2"] = fermi_ints["F_3/2"]
+del fermi_ints["F_3/2"]
+del fermi_ints["2/3"]
+
+def F_12(alpha):
+    return (fermi_ints[fermi_ints["alpha"] == alpha])["F_1/2"].values
+def F_32(alpha):
+    return (fermi_ints[fermi_ints["alpha"] == alpha])["2/3 F_3/2"].values
+
+from scipy.interpolate import CubicSpline
+spline = CubicSpline(fermi_ints["F_1/2"], fermi_ints["alpha"])
+def get_alpha_from_F_12(F_12):
+    """Finds the closest alpha value in the table"""
+    return spline(F_12)
+
+def get_F12_from_output(rho, T, n_e):
+    """rho: density, T: temperature, n_e: # of free electrons/nucleon"""
+    mu_e = rho/(n_e*u.u)
+    return (cst.h**3/(4*np.pi)*(rho/(mu_e*u.u))*(2*cst.m_e*cst.k_B*T)**(-3/2)).decompose()
+
+def plot_alpha_degen(table, label, ax):
+    rhos = (10**table["logRho"])*(u.g/u.cm**3)
+    temperatures = (10**table["logT"])*(u.K)
+    n_free = (table["free_e"])/(u.cm**3)
+    mus = table["mu"]
+    nes = rhos/(mus*u.u * (1+1/n_free.value)) # Get n_e from n_free
+    etas = table["eta"]
+    table_alpha = -etas
+    F_12s = get_F12_from_output(rhos, temperatures, nes)
+    alphas = get_alpha_from_F_12(F_12s)
+    print(alphas)
+    print(table_alpha)
+    ax.plot(alphas, table_alpha, lw=2, ls="-", label=label)
+
+ax2 = plt.subplot(111)
+plot_alpha_degen(profile_05_Msun, label=r"$0.5 M_\odot$", ax=ax2)
+plot_alpha_degen(profile_5_Msun, label=r"$5 M_\odot$", ax=ax2)
+xlims, ylims = ax2.get_xlim(), ax2.get_ylim()
+ax2.plot([*xlims],[*xlims],ls="--", color="black", lw=2)
+ax2.legend(fontsize=15)
+ax2.set_xlim(*xlims)
+ax2.set_ylim(*ylims)
+plt.xlabel(r"$\alpha$ [$-$]")
+plt.ylabel(r"$\alpha=-\eta$ from MESA [$-$]")
+plt.tight_layout()
+plt.savefig(r"ASTRO531/hw8/figures/1b_alpha.pdf")
+plt.show()
