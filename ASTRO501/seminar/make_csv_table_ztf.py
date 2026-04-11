@@ -7,11 +7,11 @@ df_selected_images = df[df["obsjd"].isin(obslist)]
 df_selected_images["mjd"] = df_selected_images["obsjd"]- 2400000.5
 
 from astropy.io import fits
-def get_image(filefracday):
+def get_image(filefracday, field=False):
     filefracday = str(filefracday)
-    path = f"ASTRO501/seminar/sci_mrk421/{filefracday[:4]}/{filefracday[4:8]}/{filefracday[8:]}/ztf_{filefracday}_000713_zg_c03_o_q1_sciimg_ra166.1138_dec38.2088_asec29.fits"
+    path = f"ASTRO501/seminar/sci_mrk421{"_field" if field else ""}/{filefracday[:4]}/{filefracday[4:8]}/{filefracday[8:]}/ztf_{filefracday}_000713_zg_c03_o_q1_sciimg_ra166.1138_dec38.2088_asec{600 if field else 29}.fits"
     img = fits.open(path)
-    psf_path = f"ASTRO501/seminar/sci_mrk421/{filefracday[:4]}/{filefracday[4:8]}/{filefracday[8:]}/ztf_{filefracday}_000713_zg_c03_o_q1_sciimgdaopsfcent.fits"
+    psf_path = f"ASTRO501/seminar/sci_mrk421{"_field" if field else ""}/{filefracday[:4]}/{filefracday[4:8]}/{filefracday[8:]}/ztf_{filefracday}_000713_zg_c03_o_q1_sciimgdaopsfcent.fits"
     psf = fits.open(psf_path)
     return img, psf
 
@@ -68,6 +68,7 @@ if __name__ == "__main__":
         noise_val = bin_centers[max_index]
         plt.stairs(vals, bins, fill=True, color="black")
         plt.axvline(noise_val, ls="--", color="red")
+        plt.axvline(np.nanmedian(img[0].data), ls="--", color="blue")
         plt.xlabel("Pixel value")
         plt.ylabel("Count")
         print(noise_val)
