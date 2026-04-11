@@ -134,20 +134,73 @@ plt.savefig("ASTRO531/hw8/figures/1b_rmo.pdf")
 
 
 def plot_gradients(table):
+    rmo = table["opacity"]*(u.cm**2/u.g)
     grad_a = table["grada"]
     grad_R = table["gradr"]
     grad_T = table["gradT"]
     logT = (table["logT"])
+    R = table["radius"]/table["radius"][-1]
+
+    conv_mask = grad_R > grad_a
+    conv_inds = np.where(conv_mask)[0]
+    if len(conv_inds) == 0:
+        print("No convective region found.")
+    else:
+        # contiguous regions (in case there are multiple zones)
+        splits = np.split(conv_inds, np.where(np.diff(conv_inds) != 1)[0] + 1)
+
+        conv_regions = []
+        conv_regions_T = []
+        for region in splits:
+            r_min = R[region[0]]
+            r_max = R[region[-1]]
+            logT_min = logT[region[0]]
+            logT_max = logT[region[-1]]
+            conv_regions.append((r_min, r_max))
+            conv_regions_T.append((logT_min, logT_max))
+
+        print("Convective regions (R/R_*):")
+        for rmin, rmax in conv_regions:
+            print(f"{rmin:.4f} to {rmax:.4f}  (ΔR = {rmax - rmin:.4f})")
+
+    from scipy.interpolate import interp1d
+    x_primary = np.array(logT)
+    x_top_vals = np.array(R)
+
     plt.figure(figsize=(8,6))
+
     ax2 = plt.subplot(111)
     ax2.plot(logT, grad_a, ls="-", lw=2, color="red", label=r"$\nabla_a$")
     ax2.plot(logT, grad_R, ls="-", lw=2, color="blue", label=r"$\nabla_R$")
     ax2.plot(logT, grad_T, ls="-", lw=2, color="green", label=r"$\nabla_T$")
-    ax2.legend(fontsize=15)
     ax2.invert_xaxis()
     ax2.set_xlabel(r"$\log T$ [$\mathrm{K}$]")
     ax2.set_ylabel(r"Gradient")
+    xlims, ylims = ax2.get_xlim(), ax2.get_ylim()
+    for T_min, T_max in conv_regions_T:
+        ax2.fill_betweenx([*ylims],T_min,T_max,alpha=0.3,color="black",label="Convective")
+    ax2.legend(fontsize=15)
+    ax2.set_xlim(*xlims)
+    ax2.set_ylim(*ylims)
+    # create top axis
+    secax = ax2.twiny()
+    secax.set_xlim(ax2.get_xlim())
+
+    # choose clean points
+    xticks = ax2.get_xticks()
+    logT_arr = np.array(logT)
+    inds = [np.argmin(np.abs(logT_arr - xt)) for xt in xticks]
+    inds = np.unique(inds)  # avoid duplicates
+    inds = inds[1:-1]
+    print(len(x_primary))
+    print(inds)
+    print(x_primary[inds])
+    secax.set_xticks(x_primary[inds])
+    secax.set_xticklabels([f"{x_top_vals[i]:.2f}" for i in inds])
+    secax.set_xlabel(r"$R/R_\star$")
     plt.ylim(0, 1.2)
+    plt.tight_layout()
+
 
 plot_gradients(profile_05_Msun)
 plt.title(r"0.5$M_\odot$",fontsize=16)
