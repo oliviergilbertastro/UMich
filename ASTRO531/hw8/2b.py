@@ -148,7 +148,30 @@ def get_evolution_tracks(hist, end_tracks=None):
             "AGB": t_agb,
             "Total": t_total
         }
-    print(phase_times(hist, ms_mask, rgb_mask, hb_mask, agb_mask))
+    def phase_masses(hist, ms, rgb, hb, agb):
+        mass = np.array(hist["star_mass"])
+        
+        def dt(mask):
+            if np.sum(mask) < 2:
+                return 0.0
+            return (mass[mask][-1] - mass[mask][0])
+        
+        t_ms  = dt(ms)
+        t_rgb = dt(rgb)
+        t_hb  = dt(hb)
+        t_agb = dt(agb)
+        
+        t_total = mass[-1] - mass[0]
+        
+        return {
+            "MS": t_ms,
+            "RGB": t_rgb,
+            "HB": t_hb,
+            "AGB": t_agb,
+            "Total": t_total
+        }
+    print("Times:",phase_times(hist, ms_mask, rgb_mask, hb_mask, agb_mask))
+    print("Masses:",phase_masses(hist, ms_mask, rgb_mask, hb_mask, agb_mask))
     return hist[ms_mask], hist[rgb_mask], hist[hb_mask], hist[agb_mask]
 
 ms_05_Msun = cut_pre_main_sequence(hist_05_Msun)
