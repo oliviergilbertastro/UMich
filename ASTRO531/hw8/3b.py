@@ -27,7 +27,9 @@ ms_sun = cut_pre_main_sequence(hist_sun)
 ms_Z0001 = cut_pre_main_sequence(hist_Z0001)
 
 
-
+print(ms_Z0001)
+import sys 
+sys.exit()
 
 
 
