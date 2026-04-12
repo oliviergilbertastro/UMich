@@ -28,7 +28,7 @@ ax = plt.subplot(111)
 line = ax.scatter(ms_sun["log_Teff"], ms_sun["log_L"], c=ms_sun["model_number"], alpha=1, label=r"$1M_\odot$")
 for i in range(len(ms_sun)//1000):
     plt.text(ms_sun["log_Teff"][i*1000], ms_sun["log_L"][i*1000], ms_sun["model_number"][i*1000])
-plt.colorbar(line)
+plt.colorbar(line, label="Model number")
 ax.set_xlabel(r"$\log T_\mathrm{eff}$ [K]")
 ax.set_ylabel(r"$\log L$ [$L_\odot$]")
 ax.legend(fontsize=15, loc="lower left")

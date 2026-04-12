@@ -41,6 +41,11 @@ for i, atr in enumerate([atr_tip_rgb]):
     conv_inds = np.where(conv_mask)[0]
     splits = np.split(conv_inds, np.where(np.diff(conv_inds) != 1)[0] + 1)
     conv_region = (atr[0][conv_inds[0]], atr[0][conv_inds[-1]])
+    r_min = (atr[1])[conv_inds[0]]
+    r_max = (atr[1])[conv_inds[-1]]
+    print("Convective regions (R/R_*):")
+    print(f"{r_min:.4f} to {r_max:.4f}  (ΔR = {r_max - r_min:.4f})")
+    print("Total r:", atr[1][-1])
     x_lims = ax.get_xlim()
     y_lims = ax.get_ylim()
     ax.fill_betweenx([*y_lims],*conv_region,alpha=0.3,color="black",label="Convective")
