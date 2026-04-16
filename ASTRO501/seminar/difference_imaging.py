@@ -96,7 +96,7 @@ def difference_image(img, psf, ref_img, ref_psf, mask=None, if_plot=False):
     plt.show()
     plt.figure()
     ax1 = plt.subplot(121)
-    ax2 = plt.subplot(122)
+    ax2 = plt.subplot(122, sharex=ax1, sharey=ax1)
     vmin, vmax = get_vmin_vmax(img_data)
     ax1.imshow(img_data, origin="lower", cmap="Greys", vmin=0, vmax=vmax)
     img_data -= estimate_bkg(img_data, median=True)
@@ -106,7 +106,7 @@ def difference_image(img, psf, ref_img, ref_psf, mask=None, if_plot=False):
     ref_reproj -= estimate_bkg(ref_reproj, median=True)
     ref_reproj_clean = np.nan_to_num(ref_reproj, nan=0.0)
     ref_matched = fftconvolve(ref_reproj_clean, kernel, mode="same")
-    ref_matched = fftconvolve(ref_reproj_clean, kernel, mode="same")
+    #ref_matched = fftconvolve(ref_reproj_clean, kernel, mode="same")
     diff = img_data - ref_matched
 
     if mask is not None:
@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
     diffs = []
     for i in range(len(imgs)):
-        #diffs.append(difference_image(imgs[i], psfs[i], reference_img, reference_psf, if_plot=True))
+        #diffs.append(difference_image(imgs[i], psfs[i], reference_img, reference_psf, if_plot=True, mask=mask))
         diffs.append(difference_image(reference_img, reference_psf, imgs[i], psfs[i], if_plot=True, mask=mask))
     plt.figure(figsize=(17,7))
     for i in range(len(diffs)):
