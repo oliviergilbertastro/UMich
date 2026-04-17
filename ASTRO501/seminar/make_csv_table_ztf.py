@@ -56,11 +56,12 @@ def net_flux(image, target_pos, noise_level, radius=40, if_plot=False):
 if __name__ == "__main__":
     counts = []
     for filefracday in df_selected_images["filefracday"].values:
-        img, psf = get_image(filefracday)
+        img, psf = get_image(filefracday, field=False)
         print(img.info())
-        #plt.imshow(img[0].data, origin="lower", cmap="Greys")
+        vmin, vmax = get_vmin_vmax(img_data)
+        plt.imshow(img[0].data, origin="lower", cmap="Greys", vmin=vmin, vmax=vmax)
         plt.figure()
-        vals, bins = np.histogram(np.nan_to_num(img[0].data,nan=0), bins=np.linspace(0,np.quantile(img[0].data,0.8),100))
+        vals, bins = np.histogram(np.nan_to_num(img[0].data,nan=0), bins=np.linspace(0,np.quantile(img[0].data,0.9),100))
         max_index = np.argmax(vals)
         # Compute bin centers
         bin_centers = 0.5 * (bins[1:] + bins[:-1])
@@ -69,6 +70,7 @@ if __name__ == "__main__":
         plt.stairs(vals, bins, fill=True, color="black")
         plt.axvline(noise_val, ls="--", color="red")
         plt.axvline(np.nanmedian(img[0].data), ls="--", color="blue")
+        plt.yscale("log")
         plt.xlabel("Pixel value")
         plt.ylabel("Count")
         print(noise_val)
