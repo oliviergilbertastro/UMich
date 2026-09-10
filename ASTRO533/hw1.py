@@ -9,3 +9,9 @@ print(V)
 n_H2 = 300*(u.cm**-3)
 N_H2 = n_H2*V
 print(N_H2)
+
+m_H2 = (2*u.u).to(u.g)
+print(m_H2)
+
+m_cloud = N_H2*m_H2
+print(m_cloud)
