@@ -48,3 +48,26 @@ print("Mean free path:",mfp)
 mass_metals_cloud = m_cloud*0.02
 print(m_cloud)
 print(mass_metals_cloud)
+
+
+V_galaxy = np.pi*(15*u.kpc)**2*150*u.pc
+V_galaxy = V_galaxy.to(u.cm**3)
+print(V_galaxy)
+print(V_galaxy.to(u.kpc**3))
+
+n_clouds = N_clouds_in_MW/V_galaxy
+n_clouds = n_clouds.to(u.kpc**-3)
+print(n_clouds)
+
+LOS_distance = 8*u.kpc
+sigma_cloud = np.pi*(15*u.pc)**2
+sigma_cloud = sigma_cloud.to(u.kpc**2)
+print("sigma_cloud:", sigma_cloud)
+
+mfp_cloud = 1/(sigma_cloud*n_clouds)
+print(mfp_cloud)
+
+expected_nb_of_clouds_in_LOS = LOS_distance/mfp_cloud
+print(expected_nb_of_clouds_in_LOS)
+
+print(np.exp(-expected_nb_of_clouds_in_LOS))
