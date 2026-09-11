@@ -35,3 +35,16 @@ mass_dust_cloud = 0.01*m_cloud
 
 N_dust_grains = mass_dust_cloud/mass_dust_grain
 print(N_dust_grains)
+
+n_dust_grains = N_dust_grains/V
+print("n_dust_grains:",n_dust_grains)
+
+sigma_dust = np.pi*dust_radius**2
+print("Cross-section:", sigma_dust)
+
+mfp = 1/(sigma_dust*n_dust_grains)
+print("Mean free path:",mfp)
+
+mass_metals_cloud = m_cloud*0.02
+print(m_cloud)
+print(mass_metals_cloud)
