@@ -71,3 +71,11 @@ expected_nb_of_clouds_in_LOS = LOS_distance/mfp_cloud
 print(expected_nb_of_clouds_in_LOS)
 
 print(np.exp(-expected_nb_of_clouds_in_LOS))
+
+
+P = 4E-13*(u.dyn/u.cm**2)
+print(P*3/2)
+
+print((1*u.dyn).to(u.eV/u.cm))
+
+print((P*3/2).to(u.eV/u.cm**3))
